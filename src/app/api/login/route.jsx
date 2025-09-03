@@ -1,22 +1,12 @@
 // "use server"
 // "use client";
 
-import { getRefreshToken, getToken, setToken, setRefreshToken } from '@/app/lib/auth'
+import {setToken, setRefreshToken } from '@/app/lib/auth'
 import {NextResponse} from 'next/server'
 
 const DJANGO_API_LOGIN_URL = "http://127.0.0.1:8000/api/token/pair"
 
 export async function POST(request) {
-
-    let myAuthToken = null;
-    let myRefreshToken = null;
-    try {
-    myAuthToken = await getToken();
-    myRefreshToken = await getRefreshToken();
-    } catch (e) {
-    console.log("No cookies yet");
-    }
-    console.log(myAuthToken, myRefreshToken)
 
     const requestData = await request.json()
     console.log(requestData)
@@ -37,7 +27,10 @@ export async function POST(request) {
         // ✅ await cookies() to get the cookies store
         await setToken(access)
         await setRefreshToken(refresh);
+
+        return NextResponse.json({"logged In":true}, {status:200})
     }
     
-    return NextResponse.json({"hello":"world"}, {status:200})
+    return NextResponse.json({"logged In":false, ...rData}, {status:400})
+    
 }

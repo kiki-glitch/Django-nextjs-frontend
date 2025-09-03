@@ -1,10 +1,9 @@
 // -> url -> /login
 "use client";
 
+import { useRouter } from "next/navigation";
 
-// const LOGIN_URL = "http://127.0.0.1:8000/api/token/pair"
 const LOGIN_URL = "/api/login/"
-
 
 export default function Page(){
 
@@ -26,6 +25,7 @@ export default function Page(){
         console.log(rData)
         if (response.ok){
             console.log("logged in")
+            router.replace("/")
         }
     }
 

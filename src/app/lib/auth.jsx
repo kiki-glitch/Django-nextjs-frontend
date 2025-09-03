@@ -43,7 +43,7 @@ export async function setRefreshToken(authRefreshToken){
         })
 }
 
-export async function deleteToken(){
+export async function deleteTokens(){
     //logout
     const cookieStore = await cookies();
     cookieStore.delete('auth-token')
