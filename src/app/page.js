@@ -1,23 +1,33 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
+import useSWR from "swr";
+
+const fetcher = (...args) => fetch(...args).then(res=>res.json())
 
 export default function Home() {
 
-  async function getDjangoAPIData() {
-    const url = "http://127.0.0.1:8000/api/hello";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
+  // async function getDjangoAPIData() {
+  //   const[data, setData] = useState('') 
+  //   const url = "http://127.0.0.1:8000/api/hello";
+  //   try {
+  //     const response = await fetch(url);
+  //     if (!response.ok) {
+  //       throw new Error(`Response status: ${response.status}`);
+  //     }
 
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
+  //     const result = await response.json();
+  //     console.log(result);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // }
+
+  // GET Requests
+  const{data, error, isLoading} = useSWR("http://127.0.0.1:8000/api/hello", fetcher)
+  if (error) return <div>failed to load....</div>
+  if (isLoading) return <div>loading...</div>
 
   async function handleClick() {
     await getDjangoAPIData()
@@ -30,11 +40,13 @@ export default function Home() {
           className="dark:invert"
           src="/next.svg"
           alt="Next.js logo"
-          onClick={handleClick}
           width={180}
           height={38}
           priority
         />
+        <div>
+          {JSON.stringify(data)}
+        </div>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
