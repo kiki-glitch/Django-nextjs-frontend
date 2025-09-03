@@ -1,6 +1,28 @@
+"use client";
+
 import Image from "next/image";
 
 export default function Home() {
+
+  async function getDjangoAPIData() {
+    const url = "http://127.0.0.1:8000/api/hello";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function handleClick() {
+    await getDjangoAPIData()
+  }
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -8,6 +30,7 @@ export default function Home() {
           className="dark:invert"
           src="/next.svg"
           alt="Next.js logo"
+          onClick={handleClick}
           width={180}
           height={38}
           priority
