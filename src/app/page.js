@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import useSWR from "swr";
 import { useAuth } from "@/components/authProvider";
+import { ThemeToggleButton } from "@/components/themeToggleButton";
 
 const fetcher = (...args) => fetch(...args).then(res=>res.json())
 
@@ -32,6 +33,9 @@ export default function Home() {
           height={38}
           priority
         />
+        <div>
+          <ThemeToggleButton/>
+        </div>
         <div>
           {JSON.stringify(data)}
         </div>
