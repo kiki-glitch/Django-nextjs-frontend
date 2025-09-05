@@ -1,3 +1,5 @@
+"use server"
+
 import { getToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
@@ -25,4 +27,39 @@ export async function GET(request) {
     let status = response.status
     
     return NextResponse.json({...result}, {status:status})
+}
+
+export async function POST(request) {
+
+    const requestData = await request.json()
+    const jsonData = JSON.stringify(requestData)
+    let headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+    const authToken = getToken()
+    if(authToken){
+        headers["Authorization"] = `Bearer ${authToken}`
+    }
+    const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body:jsonData
+    }
+    const response = await fetch(DJANGO_API_WAITLIST_URL, requestOptions)
+    console.log(response.status)
+    try{
+        const rData = await response.json()
+    }catch(error){
+        return NextResponse.json({message:"Not found"}, {status:500})
+    }
+    // console.log(rData)
+    if (response.ok){
+        console.log("Post successful")
+        return NextResponse.json({}, {status:200})
+    }
+    return NextResponse.json({"Post success":false, ...rData}, {status:400})
+    
+    
+    
 }

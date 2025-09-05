@@ -1,5 +1,4 @@
-// "use server"
-// "use client";
+"use server"
 
 import {setToken, setRefreshToken } from '@/lib/auth'
 import {NextResponse} from 'next/server'
