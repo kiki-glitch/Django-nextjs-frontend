@@ -24,11 +24,16 @@ export function LoginForm({className,...props}) {
         body: jsonData,
       });
 
-      const rData = await response.json();
-      console.log("Login response:", rData);
+      // const rData = await response.json();
+      let data = {}
+    try{
+        data = await response.json()
+      }catch(error){
+          
+      }
 
       if (response.ok) {
-        auth.login(); // ✅ triggers AuthProvider state
+        auth.login(data?.username); // ✅ triggers AuthProvider state
       } else {
         console.error("Login failed");
       }

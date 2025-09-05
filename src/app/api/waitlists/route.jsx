@@ -37,7 +37,7 @@ export async function POST(request) {
         "Content-Type": "application/json",
         "Accept": "application/json",
     }
-    const authToken = getToken()
+    const authToken = await getToken()
     if(authToken){
         headers["Authorization"] = `Bearer ${authToken}`
     }
@@ -50,6 +50,7 @@ export async function POST(request) {
     console.log(response.status)
     try{
         const rData = await response.json()
+        console.log(rData)
     }catch(error){
         return NextResponse.json({message:"Not found"}, {status:500})
     }
@@ -58,7 +59,7 @@ export async function POST(request) {
         console.log("Post successful")
         return NextResponse.json({}, {status:200})
     }
-    return NextResponse.json({"Post success":false, ...rData}, {status:400})
+    return NextResponse.json({}, {status:400})
     
     
     
