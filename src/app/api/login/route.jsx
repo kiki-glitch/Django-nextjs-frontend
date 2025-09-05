@@ -8,7 +8,6 @@ const DJANGO_API_LOGIN_URL = "http://127.0.0.1:8000/api/token/pair"
 export async function POST(request) {
 
     const requestData = await request.json()
-    console.log(requestData)
     const jsonData = JSON.stringify(requestData)
     const requestOptions = {
         method: "POST",

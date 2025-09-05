@@ -10,7 +10,7 @@ export default function Page(){
 
     async function handleSubmit(event){
         event.preventDefault()
-        console.log(event, event.target)
+        // console.log(event, event.target)
         const formData = new FormData(event.target)
         const objectFromForm = Object.fromEntries(formData)
         const jsonData = JSON.stringify(objectFromForm)

@@ -24,8 +24,7 @@ export function LoginForm({className,...props}) {
         body: jsonData,
       });
 
-      // const rData = await response.json();
-      let data = {}
+    let data = {}
     try{
         data = await response.json()
       }catch(error){
@@ -33,6 +32,8 @@ export function LoginForm({className,...props}) {
       }
 
       if (response.ok) {
+        localStorage.setItem("is_logged_in", "1") 
+        console.log(localStorage.getItem("is_logged_in"))
         auth.login(data?.username); // ✅ triggers AuthProvider state
       } else {
         console.error("Login failed");

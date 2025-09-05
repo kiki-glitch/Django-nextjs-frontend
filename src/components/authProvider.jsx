@@ -13,41 +13,47 @@ const LOCAL_USERNAME_KEY = "username"
 
 export function AuthProvider({children}){
     const [isAuthenticated, setIsAuthenticated] = useState(null)
-    const [username, setUsername]= useState(false)
+    const [username, setUsername]= useState("")
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
+    // ✅ Sync cookies → localStorage on mount
     useEffect(() => {
-    // ✅ check cookie client-side
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("auth-token="))
+        const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("auth-token="))
 
-    setIsAuthenticated(!!token)
+        if (token) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, "1")
+            setIsAuthenticated(true)
+        } else {
+            localStorage.setItem(LOCAL_STORAGE_KEY, "0")
+            setIsAuthenticated(false)
+        }
+
+        const storedUn = localStorage.getItem(LOCAL_USERNAME_KEY)
+        if (storedUn) setUsername(storedUn)
     }, [])
 
-    useEffect( () => {
-        const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_KEY)
-        if (storedAuthStatus){
-            const storedAuthStatusInt = parseInt(storedAuthStatus)
-            setIsAuthenticated(storedAuthStatusInt === 1)
-        }
-        const storedUn = localStorage.getItem(LOCAL_USERNAME_KEY)
-        if (storedUn){
-            setUsername(storedUn)
-        }
-    },[isAuthenticated])
 
     const login = (username) => {
-        setIsAuthenticated(true)
         localStorage.setItem(LOCAL_STORAGE_KEY, "1")
+        setIsAuthenticated(true) 
         if(username){
             localStorage.setItem(LOCAL_USERNAME_KEY, `${username}`)
             setUsername(username)
         }else{
             localStorage.removeItem(LOCAL_USERNAME_KEY)
         }
+        // ✅ safeguard: double-check persistence
+        // setTimeout(() => {
+        //     const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_KEY)
+        //     if (storedAuthStatus !== "1") {
+        //         console.log("Auth state not persisted, fixing…")
+        //         localStorage.setItem(LOCAL_STORAGE_KEY, "1")
+        // }
+        // }, 50)
         const nextUrl = searchParams.get("next")
         const invalidNextUrl = ['/login', '/logout']
         const nextUrlValid = nextUrl && nextUrl.startsWith("/") && !invalidNextUrl.includes(nextUrl)
@@ -65,7 +71,7 @@ export function AuthProvider({children}){
     const logout = () => {
         setIsAuthenticated(false)
         localStorage.setItem(LOCAL_STORAGE_KEY, "0")
-        localStorage.setItem(LOCAL_USERNAME_KEY, "")
+        localStorage.removeItem(LOCAL_USERNAME_KEY)
         router.replace(LOGOUT_REDIRECT_URL)
 
     }

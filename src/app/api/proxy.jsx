@@ -33,7 +33,6 @@ export default class Apiproxy{
             method: "GET",
             headers: headers,
         }
-        console.log("Fetching:", endpoint, requestOptions);
         return await fetch(endpoint, requestOptions)   
     }
 }
