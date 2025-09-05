@@ -12,11 +12,20 @@ const LOCAL_STORAGE_KEY = "is_logged_in"
 const LOCAL_USERNAME_KEY = "username"
 
 export function AuthProvider({children}){
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(null)
     const [username, setUsername]= useState(false)
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
+
+    useEffect(() => {
+    // ✅ check cookie client-side
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("auth-token="))
+
+    setIsAuthenticated(!!token)
+    }, [])
 
     useEffect( () => {
         const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_KEY)
@@ -29,6 +38,7 @@ export function AuthProvider({children}){
             setUsername(storedUn)
         }
     },[isAuthenticated])
+
     const login = (username) => {
         setIsAuthenticated(true)
         localStorage.setItem(LOCAL_STORAGE_KEY, "1")
@@ -55,6 +65,7 @@ export function AuthProvider({children}){
     const logout = () => {
         setIsAuthenticated(false)
         localStorage.setItem(LOCAL_STORAGE_KEY, "0")
+        localStorage.setItem(LOCAL_USERNAME_KEY, "")
         router.replace(LOGOUT_REDIRECT_URL)
 
     }
