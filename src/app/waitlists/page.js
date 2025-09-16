@@ -1,8 +1,6 @@
 "use client";
 
-import useSWR from "swr";
-import { useEffect } from "react";
-import { useAuth } from "@/components/authProvider";
+import WaitlistTable from "./table";
 
 const fetcher = async url => {
   const res = await fetch(url)
@@ -20,20 +18,8 @@ const fetcher = async url => {
   return res.json()
 }
 
-const WAITLIST_API_URL = "/api/waitlists"
 export default function Page() {
 
-  // GET Requests
-  const{data, error, isLoading} = useSWR(WAITLIST_API_URL, fetcher)
-  const auth = useAuth()
-
-  useEffect(() => {
-    if(error?.status === 401){
-        auth.loginRequiredRedirect()
-    }
-  },[auth, error])
-  if (error) return <div>failed to load....</div>
-  if (isLoading) return <div>loading...</div>
 
   async function handleClick() {
     await getDjangoAPIData()
@@ -41,9 +27,7 @@ export default function Page() {
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">       
-        <div>
-          {JSON.stringify(data)}
-        </div>
+        <WaitlistTable />
         
     </div>
   );

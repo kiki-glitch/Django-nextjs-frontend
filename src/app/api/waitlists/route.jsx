@@ -11,7 +11,7 @@ export async function GET(request) {
     const result = await response.json()
     let status = response.status
     
-    return NextResponse.json({...result}, {status:status})
+    return NextResponse.json(result, {status:status})
 }
 
 export async function POST(request) {

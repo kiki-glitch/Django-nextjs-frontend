@@ -4,12 +4,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useSearchParams } from "next/navigation"
 
 const LOGIN_URL = "/api/login/";
 
 export function LoginForm({className,...props}) {
 
   const auth = useAuth();
+  // const searchParams = useSearchParams();
+  // const nextUrl = searchParams.get("next");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -27,13 +30,11 @@ export function LoginForm({className,...props}) {
     let data = {}
     try{
         data = await response.json()
-      }catch(error){
-          
-      }
+      }catch(error){}
 
       if (response.ok) {
-        localStorage.setItem("is_logged_in", "1") 
-        console.log(localStorage.getItem("is_logged_in"))
+        localStorage.setItem("is-logged-in", "1") 
+        console.log(localStorage.getItem("is-logged-in"))
         auth.login(data?.username); // ✅ triggers AuthProvider state
       } else {
         console.error("Login failed");
