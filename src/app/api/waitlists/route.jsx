@@ -2,9 +2,10 @@
 
 import { NextResponse } from "next/server";
 import Apiproxy from "../proxy";
+import { DJANGO_API_ENDPOINT } from "@/config/defaults";
 
 
-const DJANGO_API_WAITLIST_URL = "http://127.0.0.1:8000/api/waitlists"
+const DJANGO_API_WAITLIST_URL = `${DJANGO_API_ENDPOINT}/waitlists`
 
 export async function GET(request) {
     const {data, status} = await Apiproxy.get(DJANGO_API_WAITLIST_URL,true)

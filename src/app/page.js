@@ -26,7 +26,7 @@ export default function Home() {
         <div>
           <WaitListForm/>
         </div>
-        <div>
+        {/* <div>
           {auth.isAuthenticated ? "Hello User": "Hello guest"}
         </div>
         <Image
@@ -36,7 +36,7 @@ export default function Home() {
           width={180}
           height={38}
           priority
-        />
+        /> */}
         <div>
           <ThemeToggleButton/>
         </div>

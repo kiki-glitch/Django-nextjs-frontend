@@ -48,7 +48,7 @@ export default function WaitlistTable() {
     if (isLoading) return <div>loading...</div>
 
     return (
-        <Table>
+        <Table className={"space-y-6"}>
         <TableCaption>A list of your waitlists</TableCaption>
         <TableHeader>
             <TableRow>
