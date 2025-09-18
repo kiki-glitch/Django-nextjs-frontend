@@ -1,34 +1,11 @@
-"use client";
+"use client"
 
-import WaitlistTable from "./table";
-
-const fetcher = async url => {
-  const res = await fetch(url)
- 
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
-  if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.')
-    // Attach extra info to the error object.
-    error.info = await res.json()
-    error.status = res.status
-    throw error
-  }
- 
-  return res.json()
-}
+import WaitlistTable from './table';
 
 export default function Page() {
-
-
-  async function handleClick() {
-    await getDjangoAPIData()
-  }
-
   return (
-    <div className="font-sans min-h-screen p-8 pb-20 sm:p-20 flex flex-col items-center justify-start pt-20">       
-        <WaitlistTable />
-        
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <WaitlistTable />
+    </main>
   );
 }
